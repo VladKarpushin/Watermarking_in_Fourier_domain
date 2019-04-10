@@ -1,63 +1,72 @@
-%2016-01-06
-%hidden information transmitting
+% 2016-01-06
+% Watermarking in Fourier domain
+% WM is short from watermark
 
 close all,clc,clear all;
 
-SNR = 1/255;    %ampliture of hidden image
+SNR = 1/255;    %ampliture of embedded wm
 
-imgA = imread('input\2.jpg');
-imgA = double(rgb2gray(imgA)); %color->gray
-figure; imshow(uint8(imgA));
+strPathIn = '..\input\';
+strPathOut = '..\output\';
+strFileNameIn = '2.jpg';
+strFileNameInWM = 'nstu1.jpg';
+
+imgOriginal = imread(strcat(strPathIn, strFileNameIn));
+imgOriginal = double(rgb2gray(imgOriginal));
+figure, imshow(uint8(imgOriginal), []);
 title('Original image');
+imwrite(uint8(imgOriginal), strcat(strPathOut, 'original_img.jpg'));
 
-imgB = imread('input\nstu1.jpg');
-imgB = double(rgb2gray(imgB)); %color->gray
-figure; imshow(uint8(imgB));
-title('Hidden image');
+imgWM = imread(strcat(strPathIn, strFileNameInWM));
+imgWM = double(rgb2gray(imgWM));
+figure, imshow(uint8(imgWM), []);
+title('Watermark');
+imwrite(uint8(imgWM), strcat(strPathOut, 'wm.jpg'));
 
-%signal carrier forming (start)
-[h w] = size(imgB);
+
+% high frequency carrier generation (start)
+[h w] = size(imgWM);
 imgC = ones([h w]);
 for i =1:h
      for j =1:w
             imgC(i,j) = (-1)^(i+j);
-     end;
-end;
-imwrite(imgC,'output\carrier.jpg');
-%signal carrier forming (stop)
+     end
+end
+imwrite(imgC, strcat(strPathOut, 'carrier.jpg'));
+% high frequency carrier generation (stop)
 
-%modulation (start)
-imgD = imgC.*imgB*SNR;
-imwrite(imgD,'output\modulated image.jpg');
-%modulation (stop)
+% WM modulation (start)
+imgWM_modulated = imgC.*imgWM*SNR;
+imwrite(imgWM_modulated, strcat(strPathOut, 'wm_modulated.jpg'));
+% modulation (stop)
 
-%PSD finding (start)
-imgA_fft = fft2(imgA);   %spectrum 
-imgA_fft(1,1) = 0;   %removing of constant component
+% PSD calculation (start)
+imgA_fft = fft2(imgOriginal);   % spectrum 
+imgA_fft(1,1) = 0;              % removing of constant component
 imgA_PSD = imgA_fft.*conj(imgA_fft);  %Power spectrum density
 imgA_PSD_norm = fftshift(255*(imgA_PSD -min(min(imgA_PSD))) /(max(max(imgA_PSD)) - min(min(imgA_PSD))));
 figure; imshow(imgA_PSD_norm);
-title('Power spectrum density of original image');
-imwrite(imgA_PSD_norm,'output\PSD of original image.jpg');
+title('Power spectrum density of an original image');
+imwrite(imgA_PSD_norm, strcat(strPathOut, 'original_img_psd.jpg'));
 
-imgB_fft = fft2(imgB);   %spectrum 
-imgB_fft(1,1) = 0;   %removing of constant component
+imgB_fft = fft2(imgWM);         % spectrum 
+imgB_fft(1,1) = 0;              % removing of constant component
 imgB_PSD = imgB_fft.*conj(imgB_fft);  %Power spectrum density
 imgB_PSD_norm = fftshift(255*(imgB_PSD -min(min(imgB_PSD))) /(max(max(imgB_PSD)) - min(min(imgB_PSD))));
 figure; imshow(imgB_PSD_norm);
-title('Power spectrum density of hidden image');
-imwrite(imgB_PSD_norm,'output\PSD of hidden image.jpg');
+title('Power spectrum density of WM');
+imwrite(imgB_PSD_norm, strcat(strPathOut, 'wm_psd.jpg'));
 
-imgD_fft = fft2(imgD);   %spectrum 
-imgD_fft(1,1) = 0;   %removing of constant component
+imgD_fft = fft2(imgWM_modulated);   % spectrum 
+imgD_fft(1,1) = 0;                  % removing of constant component
 imgD_PSD = imgD_fft.*conj(imgD_fft);  %Power spectrum density
 imgD_PSD_norm = fftshift(255*(imgD_PSD -min(min(imgD_PSD))) /(max(max(imgD_PSD)) - min(min(imgD_PSD))));
 figure; imshow(imgD_PSD_norm);
-title('Power spectrum density of modulated image');
-imwrite(imgD_PSD_norm,'output\PSD of modulated image.jpg');
-%PSD finding (stop)
+title('Power spectrum density of modulated WM');
+imwrite(imgD_PSD_norm, strcat(strPathOut, 'wm_modulated_psd.jpg'));
+% PSD calculation (start)
 
-%filtering(start)
+% filtering(start)
 h1 = fix(h/4);
 h2 = fix(3*h/4);
 w1 = fix(w/4);
