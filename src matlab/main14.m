@@ -15,7 +15,7 @@ imgOriginal = imread(strcat(strPathIn, strFileNameIn));
 imgOriginal = double(rgb2gray(imgOriginal));
 figure, imshow(uint8(imgOriginal), []);
 title('Original image');
-imwrite(uint8(imgOriginal), strcat(strPathOut, 'original_img.jpg'));
+imwrite(uint8(imgOriginal), strcat(strPathOut, 'img_original.jpg'));
 
 imgWM = imread(strcat(strPathIn, strFileNameInWM));
 imgWM = double(rgb2gray(imgWM));
@@ -42,17 +42,17 @@ imwrite(imgWM_modulated, strcat(strPathOut, 'wm_modulated.jpg'));
 
 % PSD calculation (start)
 imgOriginalPSD = calcPSD(imgOriginal);
-figure, imshow(imgOriginalPSD);
+figure, imshow(imgOriginalPSD, []);
 title('Power spectrum density of an original image');
-imwrite(imgOriginalPSD, strcat(strPathOut, 'original_img_psd.jpg'));
+imwrite(imgOriginalPSD, strcat(strPathOut, 'img_original_psd.jpg'));
 
 imgWM_PSD = calcPSD(imgWM);         % spectrum 
-figure, imshow(imgWM_PSD);
+figure, imshow(imgWM_PSD, []);
 title('Power spectrum density of WM');
 imwrite(imgWM_PSD, strcat(strPathOut, 'wm_psd.jpg'));
 
 imgWM_modulated_PSD = calcPSD(imgWM_modulated);   % spectrum 
-figure, imshow(imgWM_modulated_PSD);
+figure, imshow(imgWM_modulated_PSD, []);
 title('Power spectrum density of modulated WM');
 imwrite(imgWM_modulated_PSD, strcat(strPathOut, 'wm_modulated_psd.jpg'));
 % PSD calculation (start)
@@ -64,8 +64,8 @@ mask = calcMask(h, w);
 imgOriginal_fft_cut = fft2(imgOriginal) .* ~mask;  % filtering
 imgWM_modulated_fft_cut = fft2(imgWM_modulated) .* mask;
 img_combined = real(ifft2(imgOriginal_fft_cut+imgWM_modulated_fft_cut));
-img_combined = uint8(255*(img_combined-min(min(img_combined))) / (max(max(img_combined))-min(min(img_combined))));
-imwrite(img_combined, strcat(strPathOut, 'original_img_plus_wm.bmp'));
+img_combined = imNorm(img_combined);
+imwrite(img_combined, strcat(strPathOut, 'img_original_plus_wm.bmp'));
 % filtering (stop)
 
 close all, clc, clear all;
@@ -73,8 +73,9 @@ close all, clc, clear all;
 % ***************************
 % demodulation (start)
 % ***************************
-img_combined = double(imread(strcat(strPathOut, 'original_img_plus_wm.bmp')));
-figure, imshow(uint8(img_combined));
+strPathOut = '..\output\';
+img_combined = double(imread(strcat(strPathOut, 'img_original_plus_wm.bmp')));
+figure, imshow(uint8(img_combined), []);
 title('An original image with embedded invisible watermark');
 
 [h w] = size(img_combined);
@@ -83,10 +84,10 @@ img_fft_cut = fft2(img_combined) .* mask;
 img_fft_cut(1, 1) = 0;
 
 imgWM = abs(real(ifft2(img_fft_cut))); %demodulation
-imgWM = uint8(255*(imgWM-min(min(imgWM)))/(max(max(imgWM))-min(min(imgWM))));
-imwrite(imgWM, strcat(strPathOut, 'extracted_wm.jpg'));
-figure; imshow(imgF_newA,[]);
-title('extracted hidden image');
+imgWM = imNorm(imgWM);
+imwrite(imgWM, strcat(strPathOut, 'wm_extracted.jpg'));
+figure; imshow(imgWM,[]);
+title('An extracted watermark');
 
 % ***************************
 % demodulation (stop)

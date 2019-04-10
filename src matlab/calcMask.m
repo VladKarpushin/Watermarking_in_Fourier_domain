@@ -1,5 +1,5 @@
 % function calculates frequency mask
-function imgMask = calcMask(h, w)
+function mask = calcMask(h, w)
 
 h1 = fix(h/4);
 h2 = fix(3*h/4);
