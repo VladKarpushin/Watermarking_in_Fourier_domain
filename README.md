@@ -1,4 +1,4 @@
-Interpolation in Fourier Space
+Watermarking in Fourier domain
 ==========================
 
 Goal
@@ -6,17 +6,24 @@ Goal
 
 In this tutorial you will learn:
 
--   how to interpolate an image in the Fourier domain
+-   how to embed an invisible watermark in Fourier domain
 
 Theory
 ------
 
+Theory is based on well known Digital Image Processing (Gonsalez) book
 
 Result
 ------
 
-The figure below shows an interpolation result in the Fourier domain
-![Image corrupted by periodic noise](/www/images/resultC_fft.jpg)
+The figure below shows an original image
+![Image corrupted by periodic noise](/www/images/original_img.jpg)
 
-The figure below shows an interpolation result as Nearest-neighbor interpolation.
-![Power spectrum density showing periodic noise](/www/images/resultD_nearest.jpg)
+The figure below shows an invisible watermark
+![Image corrupted by periodic noise](/www/images/wm.jpg)
+
+The figure below shows an original image with embedded invisible watermark in Fourier domain
+![Image corrupted by periodic noise](/www/images/original_img_plus_wm.jpg)
+
+The figure below shows an extracted watermark
+![Image corrupted by periodic noise](/www/images/extracted_wm.jpg)
