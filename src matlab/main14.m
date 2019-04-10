@@ -26,40 +26,36 @@ imwrite(img_watermarked, strcat(strPathOut, 'img_original_plus_wm.bmp'));
 % ***************************
 
 
-close all, clc, clear all;
+%close all, clc, clear all;
 
 % ***************************
 % decoder (start)
 % ***************************
 strPathOut = '..\output\';
 img_watermarked = double(imread(strcat(strPathOut, 'img_original_plus_wm.bmp')));
+
 figure, imshow(uint8(img_watermarked), []);
 title('An original image with embedded invisible watermark');
 
-[h w] = size(img_watermarked);
-mask = calcMask(h, w);
-img_fft_cut = fft2(img_watermarked) .* mask;
-img_fft_cut(1, 1) = 0;
+imgWM_extracted = doWmDeCoding(img_watermarked);
 
-imgWM = abs(real(ifft2(img_fft_cut))); %demodulation
-imgWM = imNorm(imgWM);
-imwrite(imgWM, strcat(strPathOut, 'wm_extracted.jpg'));
-figure; imshow(imgWM,[]);
+imwrite(imgWM_extracted, strcat(strPathOut, 'wm_extracted.jpg'));
+figure; imshow(imgWM_extracted,[]);
 title('An extracted watermark');
 
 % ***************************
 % decoder (stop)
 % ***************************
 % SNR calculation (start)
-SNR
-SNR_Amp_vl = std2(imgD)/std2(imgE_combined) %imgD - modulated signal, 
-SNR_P_v1 = SNR_Amp_vl^2
-SNR_P_DB_v1 = 10*log10(SNR_P_v1) %less accurate
-
-SNR_P_DB_v2 = 10*log10(sum(sum(imgD_PSD))/sum(sum(imgA_PSD))) %by PSD (more accurate)
-
-NSR = std2(imgE_combined)/std2(imgD);
-SNR_Amp_v3 = 1/(NSR-1)
-SNR_P_v3 = SNR_Amp_v3^2
-SNR_P_DB_v3 = 10*log10(SNR_P_v3)
+% SNR
+% SNR_Amp_vl = std2(imgD)/std2(imgE_combined) %imgD - modulated signal, 
+% SNR_P_v1 = SNR_Amp_vl^2
+% SNR_P_DB_v1 = 10*log10(SNR_P_v1) %less accurate
+% 
+% SNR_P_DB_v2 = 10*log10(sum(sum(imgD_PSD))/sum(sum(imgA_PSD))) %by PSD (more accurate)
+% 
+% NSR = std2(imgE_combined)/std2(imgD);
+% SNR_Amp_v3 = 1/(NSR-1)
+% SNR_P_v3 = SNR_Amp_v3^2
+% SNR_P_DB_v3 = 10*log10(SNR_P_v3)
 %SNR calculation (stop)
