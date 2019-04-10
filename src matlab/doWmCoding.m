@@ -1,5 +1,5 @@
 % function does watermark coding
-function imgOut = doWmCoding(imgOriginal, imgWM, strPathOut)
+function imgOut = doWmCoding(imgOriginal, imgWM, SNR, strPathOut)
 
 imgOriginal = double(rgb2gray(imgOriginal));
 figure, imshow(uint8(imgOriginal), []);
