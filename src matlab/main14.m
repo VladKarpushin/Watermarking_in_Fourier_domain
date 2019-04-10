@@ -14,7 +14,7 @@ strPathOut = '..\output\';
 strFileNameIn = '2.jpg';
 strFileNameInWM = 'nstu1.jpg';
 
-SNR = 2/255;                %ampliture of embedded wm
+SNR = 1/255;                %ampliture of embedded wm
 imgOriginal = imread(strcat(strPathIn, strFileNameIn));
 imgOriginal = double(rgb2gray(imgOriginal));
 imgWM = imread(strcat(strPathIn, strFileNameInWM));
@@ -39,6 +39,7 @@ title('An original image with embedded invisible watermark');
 
 %img_watermarked = imrotate(img_watermarked, 1, 'bicubic', 'crop'); % robustness
 %img_watermarked = imresize(img_watermarked, 0.95); % robustness
+%img_watermarked = img_watermarked(1:1000,1:1000);
 
 figure, imshow(uint8(img_watermarked), []);
 title('rotated');

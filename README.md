@@ -23,9 +23,6 @@ MSE =  7.7866
 
 PSNR = 39.2173
 
-The figure below shows an original image
-![Image corrupted by periodic noise](/www/images/img_original.jpg)
-
 The figure below shows an invisible watermark
 ![Image corrupted by periodic noise](/www/images/wm.jpg)
 
