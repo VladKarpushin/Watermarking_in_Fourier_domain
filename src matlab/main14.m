@@ -5,11 +5,11 @@
 close all, clc, clear all;
 
 
+strFileNameOut = 'img_original_plus_wm.jpg';
+
 % ***************************
 % coder (start)
 % ***************************
-
-
 strPathIn = '..\input\';
 strPathOut = '..\output\';
 strFileNameIn = '2.jpg';
@@ -17,9 +17,10 @@ strFileNameInWM = 'nstu1.jpg';
 
 SNR = 1/255;                %ampliture of embedded wm
 imgOriginal = imread(strcat(strPathIn, strFileNameIn));
+imgOriginal = double(rgb2gray(imgOriginal));
 imgWM = imread(strcat(strPathIn, strFileNameInWM));
 img_watermarked = doWmCoding(imgOriginal, imgWM, SNR, strPathOut);
-imwrite(img_watermarked, strcat(strPathOut, 'img_original_plus_wm.bmp'));
+imwrite(img_watermarked, strcat(strPathOut, strFileNameOut));
 
 % ***************************
 % coder (stop)
@@ -32,7 +33,7 @@ imwrite(img_watermarked, strcat(strPathOut, 'img_original_plus_wm.bmp'));
 % decoder (start)
 % ***************************
 strPathOut = '..\output\';
-img_watermarked = double(imread(strcat(strPathOut, 'img_original_plus_wm.bmp')));
+img_watermarked = double(imread(strcat(strPathOut, strFileNameOut)));
 
 figure, imshow(uint8(img_watermarked), []);
 title('An original image with embedded invisible watermark');
@@ -46,6 +47,12 @@ title('An extracted watermark');
 % ***************************
 % decoder (stop)
 % ***************************
+
+% MSE - mean-squared error
+% PSNR - Peak signal to noise ratio
+MSE = std2(imgOriginal - img_watermarked)^2
+PSNR = 10*log10((max(max(imgOriginal))^2)/MSE)
+
 % SNR calculation (start)
 % SNR
 % SNR_Amp_vl = std2(imgD)/std2(imgE_combined) %imgD - modulated signal, 
