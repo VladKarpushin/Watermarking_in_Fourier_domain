@@ -16,6 +16,13 @@ Theory is based on well known Digital Image Processing (Gonsalez) book
 Result
 ------
 
+MSE - mean-squared error.
+PSNR - Peak signal to noise ratio.
+
+MSE =  7.7866
+
+PSNR = 39.2173
+
 The figure below shows an original image
 ![Image corrupted by periodic noise](/www/images/img_original.jpg)
 

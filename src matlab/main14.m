@@ -4,8 +4,7 @@
 
 close all, clc, clear all;
 
-
-strFileNameOut = 'img_original_plus_wm.jpg';
+strFileNameOut = 'img_original_plus_wm.bmp';
 
 % ***************************
 % coder (start)
@@ -15,7 +14,7 @@ strPathOut = '..\output\';
 strFileNameIn = '2.jpg';
 strFileNameInWM = 'nstu1.jpg';
 
-SNR = 1/255;                %ampliture of embedded wm
+SNR = 2/255;                %ampliture of embedded wm
 imgOriginal = imread(strcat(strPathIn, strFileNameIn));
 imgOriginal = double(rgb2gray(imgOriginal));
 imgWM = imread(strcat(strPathIn, strFileNameInWM));
@@ -37,6 +36,12 @@ img_watermarked = double(imread(strcat(strPathOut, strFileNameOut)));
 
 figure, imshow(uint8(img_watermarked), []);
 title('An original image with embedded invisible watermark');
+
+%img_watermarked = imrotate(img_watermarked, 1, 'bicubic', 'crop'); % robustness
+%img_watermarked = imresize(img_watermarked, 0.95); % robustness
+
+figure, imshow(uint8(img_watermarked), []);
+title('rotated');
 
 imgWM_extracted = doWmDeCoding(img_watermarked);
 
