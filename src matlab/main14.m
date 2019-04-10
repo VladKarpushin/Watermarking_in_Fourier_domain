@@ -41,29 +41,20 @@ imwrite(imgWM_modulated, strcat(strPathOut, 'wm_modulated.jpg'));
 % modulation (stop)
 
 % PSD calculation (start)
-imgA_fft = fft2(imgOriginal);   % spectrum 
-imgA_fft(1,1) = 0;              % removing of constant component
-imgA_PSD = imgA_fft.*conj(imgA_fft);  %Power spectrum density
-imgA_PSD_norm = fftshift(255*(imgA_PSD -min(min(imgA_PSD))) /(max(max(imgA_PSD)) - min(min(imgA_PSD))));
-figure; imshow(imgA_PSD_norm);
+imgOriginalPSD = calcPSD(imgOriginal);
+figure, imshow(imgOriginalPSD);
 title('Power spectrum density of an original image');
-imwrite(imgA_PSD_norm, strcat(strPathOut, 'original_img_psd.jpg'));
+imwrite(imgOriginalPSD, strcat(strPathOut, 'original_img_psd.jpg'));
 
-imgB_fft = fft2(imgWM);         % spectrum 
-imgB_fft(1,1) = 0;              % removing of constant component
-imgB_PSD = imgB_fft.*conj(imgB_fft);  %Power spectrum density
-imgB_PSD_norm = fftshift(255*(imgB_PSD -min(min(imgB_PSD))) /(max(max(imgB_PSD)) - min(min(imgB_PSD))));
-figure; imshow(imgB_PSD_norm);
+imgWM_PSD = calcPSD(imgWM);         % spectrum 
+figure, imshow(imgWM_PSD);
 title('Power spectrum density of WM');
-imwrite(imgB_PSD_norm, strcat(strPathOut, 'wm_psd.jpg'));
+imwrite(imgWM_PSD, strcat(strPathOut, 'wm_psd.jpg'));
 
-imgD_fft = fft2(imgWM_modulated);   % spectrum 
-imgD_fft(1,1) = 0;                  % removing of constant component
-imgD_PSD = imgD_fft.*conj(imgD_fft);  %Power spectrum density
-imgD_PSD_norm = fftshift(255*(imgD_PSD -min(min(imgD_PSD))) /(max(max(imgD_PSD)) - min(min(imgD_PSD))));
-figure; imshow(imgD_PSD_norm);
+imgWM_modulated_PSD = calcPSD(imgWM_modulated);   % spectrum 
+figure, imshow(imgWM_modulated_PSD);
 title('Power spectrum density of modulated WM');
-imwrite(imgD_PSD_norm, strcat(strPathOut, 'wm_modulated_psd.jpg'));
+imwrite(imgWM_modulated_PSD, strcat(strPathOut, 'wm_modulated_psd.jpg'));
 % PSD calculation (start)
 
 % filtering(start)
