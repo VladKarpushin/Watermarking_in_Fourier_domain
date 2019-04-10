@@ -2,7 +2,7 @@
 % Watermarking in Fourier domain
 % WM is short from watermark
 
-close all,clc,clear all;
+close all, clc, clear all;
 
 SNR = 1/255;    %ampliture of embedded wm
 
@@ -57,38 +57,40 @@ title('Power spectrum density of modulated WM');
 imwrite(imgWM_modulated_PSD, strcat(strPathOut, 'wm_modulated_psd.jpg'));
 % PSD calculation (start)
 
-% filtering(start)
-h1 = fix(h/4);
-h2 = fix(3*h/4);
-w1 = fix(w/4);
-w2 = fix(3*w/4);
+% filtering (start)
+mask = calcMask(h, w);
 
-imgA_fft_cut = imgA_fft;
-imgD_fft_cut = zeros([h w]);
-imgD_fft_filter = zeros([h w]);
-imgD_fft_filter(h1:h2,w1:w2) = 1;
 
-imgA_fft_cut = imgA_fft.*~imgD_fft_filter;  %filtering
-imgD_fft_cut = imgD_fft.*imgD_fft_filter;
-imgE_combined = real(ifft2(imgA_fft_cut+imgD_fft_cut));
-imgE_combined = uint8(255*(imgE_combined-min(min(imgE_combined)))/(max(max(imgE_combined))-min(min(imgE_combined))));
-imwrite(imgE_combined,'output\combined.bmp');
-%filtering(stop)
+imgOriginal_fft_cut = fft2(imgOriginal) .* ~mask;  % filtering
+imgWM_modulated_fft_cut = fft2(imgWM_modulated) .* mask;
+img_combined = real(ifft2(imgOriginal_fft_cut+imgWM_modulated_fft_cut));
+img_combined = uint8(255*(img_combined-min(min(img_combined))) / (max(max(img_combined))-min(min(img_combined))));
+imwrite(img_combined, strcat(strPathOut, 'original_img_plus_wm.bmp'));
+% filtering (stop)
 
-%demodulation(start)
-imgE_combined = double(imread('output\combined.bmp'));
-figure; imshow(uint8(imgE_combined));
-title('cimbined image');
-imgE_fft_combined = fft2(imgE_combined);   %spectrum 
-imgE_fft_combined(1,1) = 0;   %removing of constant component
-imgE_fft_combined_cut = imgE_fft_combined.*imgD_fft_filter;
-imgF_new = abs(real(ifft2(imgE_fft_combined_cut))); %demodulation
-imgF_newA = uint8(255*(imgF_new-min(min(imgF_new)))/(max(max(imgF_new))-min(min(imgF_new))));
-imwrite(imgF_newA,'output\extracted image.bmp');
+close all, clc, clear all;
+
+% ***************************
+% demodulation (start)
+% ***************************
+img_combined = double(imread(strcat(strPathOut, 'original_img_plus_wm.bmp')));
+figure, imshow(uint8(img_combined));
+title('An original image with embedded invisible watermark');
+
+[h w] = size(img_combined);
+mask = calcMask(h, w);
+img_fft_cut = fft2(img_combined) .* mask;
+img_fft_cut(1, 1) = 0;
+
+imgWM = abs(real(ifft2(img_fft_cut))); %demodulation
+imgWM = uint8(255*(imgWM-min(min(imgWM)))/(max(max(imgWM))-min(min(imgWM))));
+imwrite(imgWM, strcat(strPathOut, 'extracted_wm.jpg'));
 figure; imshow(imgF_newA,[]);
 title('extracted hidden image');
-%demodulation(stop)
 
+% ***************************
+% demodulation (stop)
+% ***************************
 %SNR calculation (start)
 SNR
 SNR_Amp_vl = std2(imgD)/std2(imgE_combined) %imgD - modulated signal, 
