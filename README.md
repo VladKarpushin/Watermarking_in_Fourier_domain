@@ -13,7 +13,7 @@ Theory
 
 Watermark theory is described in well known Digital Image Processing (Gonzalez) book. Current work offers new watermark embedding method.
 A watermark (wm) is modulated first and then added on high frequencies of the host image.
-So, the algorithm is below
+So, the algorithm is below:
 - both original image and wm are filtered
 - high freq carrier generation
 - the carrier is modulated by wm
