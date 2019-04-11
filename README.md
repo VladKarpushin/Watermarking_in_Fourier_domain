@@ -12,7 +12,12 @@ Theory
 ------
 
 Watermark theory is described in well known Digital Image Processing (Gonzalez) book. Current work offers new watermark embedding method.
-A watermark is modulated first and then added on high frequencies of the host image.
+A watermark (wm) is modulated first and then added on high frequencies of the host image.
+So, the algorithm is below
+- both original image and wm are filtered
+- high freq carrier generation
+- the carrier is modulated by wm
+- adding original image and high freq wm
 
 Result
 ------
@@ -34,20 +39,20 @@ The figure below shows an original image with embedded invisible watermark in th
 The figure below shows an extracted watermark
 ![Image corrupted by periodic noise](/www/images/wm_extracted.jpg)
 
-The figure below shows high frequency carrier
+The figure below shows high-frequency carrier
 ![Image corrupted by periodic noise](/www/images/carrier.jpg)
 
-The figure below shows PSD of watermark
+The figure below shows PSD of a watermark
 ![Image corrupted by periodic noise](/www/images/wm_psd.jpg)
 
-The figure below shows PSD of modulated watermark
+The figure below shows PSD of a modulated watermark
 ![Image corrupted by periodic noise](/www/images/wm_modulated_psd.jpg)
 
-The figure below shows modulated watermark
+The figure below shows a modulated watermark
 ![Image corrupted by periodic noise](/www/images/wm_modulated.jpg)
 
-The figure below shows PSD of an original image
+The figure below shows the PSD of an original image
 ![Image corrupted by periodic noise](/www/images/img_original_psd.jpg)
 
-The figure below shows frequency filter
+The figure below shows the frequency filter
 ![Image corrupted by periodic noise](/www/images/mask.jpg)
