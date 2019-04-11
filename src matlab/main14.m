@@ -11,7 +11,7 @@ strFileNameOut = 'img_original_plus_wm.bmp';
 % ***************************
 strPathIn = '..\input\';
 strPathOut = '..\output\';
-strFileNameIn = '2_1024.jpg';
+strFileNameIn = '2_800.jpg';
 strFileNameInWM = 'nstu1.jpg';
 
 SNR = 1/255;                %ampliture of embedded wm
@@ -20,8 +20,9 @@ imgOriginal = double(rgb2gray(imgOriginal));
 imgWM = imread(strcat(strPathIn, strFileNameInWM));
 
 imgWM = imresize(imgWM, size(imgOriginal));
-img_watermarked = doWmCoding(imgOriginal, imgWM, SNR, strPathOut);
+[img_watermarked, mask] = doWmCoding(imgOriginal, imgWM, SNR, strPathOut);
 imwrite(img_watermarked, strcat(strPathOut, strFileNameOut));
+imwrite(imNorm(mask), strcat(strPathOut, 'mask.jpg'));
 
 % ***************************
 % coder (stop)
