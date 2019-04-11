@@ -11,7 +11,8 @@ In this tutorial you will learn:
 Theory
 ------
 
-Watermark theory is described in well known Digital Image Processing (Gonzalez) book. Current work offers new watermark embedding method.
+Watermark theory is described in well known Digital Image Processing (Gonzalez) book. Current work offers new watermark embedding method. 
+The algorithm keeps robustness to imrotate, imresize, imcrop and imcompress attacks.
 A watermark (wm) is modulated first and then added on high frequencies of the host image.
 So, the algorithm is below:
 - both original image and wm are filtered
